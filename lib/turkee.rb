@@ -74,7 +74,7 @@ module Turkee
         hit.reward      = reward
         hit.lifetime    = duration.days.seconds.to_i
         hit.question(f_url, :frame_height => HIT_FRAMEHEIGHT)
-        # hit.qualifications.add :approval_rate, { :gt => 80 }
+        hit.qualifications.add :approval_rate, { :gt => 50 }
       end
 
       TurkeeTask.create(:sandbox             => RTurk.sandbox?,
