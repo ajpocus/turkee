@@ -75,7 +75,7 @@ module Turkee
         hit.lifetime    = duration.days.seconds.to_i
         hit.question(f_url, :frame_height => HIT_FRAMEHEIGHT)
         hit.qualifications.add :approval_rate, { :gt => 50 }
-	hit.auto_approval_delay = 0
+	      hit.auto_approval_delay = 0
       end
 
       TurkeeTask.create(:sandbox             => RTurk.sandbox?,
@@ -83,7 +83,8 @@ module Turkee
                         :hit_reward          => reward.to_f,  :hit_num_assignments => num_assignments.to_i,
                         :hit_lifetime        => lifetime,     :form_url            => f_url,
                         :hit_url             => h.url,        :hit_id              => h.id,
-                        :task_type           => typ,          :complete            => false)
+                        :task_type           => typ,          :complete            => false
+                        :creation_time       => DateTime.now)
 
     end
 
@@ -141,6 +142,7 @@ module Turkee
       hit.dispose!
 
       turk.complete = true
+      turk.completion_time = DateTime.now
       turk.save
 
       models.each { |model| model.hit_complete(turk) if model.respond_to?(:hit_complete) }
