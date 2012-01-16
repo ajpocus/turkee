@@ -83,7 +83,7 @@ module Turkee
                         :hit_reward          => reward.to_f,  :hit_num_assignments => num_assignments.to_i,
                         :hit_lifetime        => lifetime,     :form_url            => f_url,
                         :hit_url             => h.url,        :hit_id              => h.id,
-                        :task_type           => typ,          :complete            => false
+                        :task_type           => typ,          :complete            => false,
                         :creation_time       => DateTime.now)
 
     end
