@@ -148,7 +148,7 @@ module Turkee
     end
 
     def self.process_result(assignment, result)
-      turk = self.find_by_hit_id(assignment.hit_id)
+      turk = find_by_hit_id(assignment.hit_id)
       if result.errors.size > 0
         logger.info "Errors : #{result.inspect}"
         assignment.reject!('Failed to enter proper data.')
