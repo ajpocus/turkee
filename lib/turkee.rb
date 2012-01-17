@@ -153,13 +153,15 @@ module Turkee
         assignment.reject!('Failed to enter proper data.')
       elsif result.respond_to?(:approve?)
         logger.debug "Approving : #{result.inspect}"
-        result.approve? ? assignment.approve!('') : assignment.reject!('Rejected criteria.')
+        if result.approve?
+          self.completed_assignments += 1
+          assignment.approve!('')
+        else
+          assignment.reject!('Rejected criteria.')
+        end
       else
-        assignment.approve!('')
-      end
-      
-      if assignment.approved?
         self.completed_assignments += 1
+        assignment.approve!('')
       end
     end
 
