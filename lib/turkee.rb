@@ -148,19 +148,22 @@ module Turkee
     end
 
     def self.process_result(assignment, result)
+      turk = self.find_by_hit_id(assignment.hit_id)
       if result.errors.size > 0
         logger.info "Errors : #{result.inspect}"
         assignment.reject!('Failed to enter proper data.')
       elsif result.respond_to?(:approve?)
         logger.debug "Approving : #{result.inspect}"
         if result.approve?
-          self.completed_assignments += 1
+          turk.completed_assignments += 1
+          turk.save
           assignment.approve!('')
         else
           assignment.reject!('Rejected criteria.')
         end
       else
-        self.completed_assignments += 1
+        turk.completed_assignments += 1
+        turk.save
         assignment.approve!('')
       end
     end
