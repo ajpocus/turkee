@@ -155,6 +155,7 @@ module Turkee
       elsif result.respond_to?(:approve?)
         logger.debug "Approving : #{result.inspect}"
         if result.approve?
+          turk.completed_assignments ||= 0
           turk.completed_assignments += 1
           turk.save
           assignment.approve!('')
@@ -162,6 +163,7 @@ module Turkee
           assignment.reject!('Rejected criteria.')
         end
       else
+        turk.completed_assignments ||= 0
         turk.completed_assignments += 1
         turk.save
         assignment.approve!('')
