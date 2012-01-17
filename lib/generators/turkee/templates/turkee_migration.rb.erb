@@ -15,6 +15,7 @@ class CreateTurkeeTasks < ActiveRecord::Migration
       t.boolean  "complete"
       t.datetime "creation_time"
       t.datetime "completion_time"
+      t.integer  "completed_assignments"
       t.timestamps
     end
   end

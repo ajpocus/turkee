@@ -134,7 +134,7 @@ module Turkee
     end
 
     def self.check_hit_completeness(hit, turk, models)
-      mark_completed(hit, models, turk) if hit.completed_assignments == turk.hit_num_assignments
+      mark_completed(hit, models, turk) if turk.completed_assignments == turk.hit_num_assignments
     end
 
     def self.mark_completed(hit, models, turk)
@@ -156,6 +156,10 @@ module Turkee
         result.approve? ? assignment.approve!('') : assignment.reject!('Rejected criteria.')
       else
         assignment.approve!('')
+      end
+      
+      if assignment.approved?
+        self.completed_assignments += 1
       end
     end
 
