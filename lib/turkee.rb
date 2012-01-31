@@ -42,9 +42,13 @@ module Turkee
               param_hash = Rack::Utils.parse_nested_query(params)
               model      = find_model(param_hash)
 
-              next if model.nil?
+              if model.nil?
+                logger.info "Model is nil"
+                next
+              end
               result = model.create(param_hash[model.to_s.underscore])
-
+              logger.info "Result: #{ result }"
+              
               # If there's a custom approve? method, see if we should approve the submitted assignment
               #  otherwise just approve it by default
               process_result(assignment, result)
