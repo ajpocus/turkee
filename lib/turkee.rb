@@ -48,6 +48,8 @@ module Turkee
                 logger.info "#{ DateTime.now }: Model nil"
                 next
               end
+              logger.info "#{ DateTime.now }: param_hash[#{ model.to_s.underscore }]"
+              logger.info "     #{ param_hash[model.to_s.underscore]}"
               result = model.create(param_hash[model.to_s.underscore])
               
               # If there's a custom approve? method, see if we should approve the submitted assignment
