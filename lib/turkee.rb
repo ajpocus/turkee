@@ -98,7 +98,7 @@ module Turkee
     # DON'T PUSH THIS BUTTON UNLESS YOU MEAN IT. :)
     def self.clear_all_turks(force = false)
       # Do NOT execute this function if we're in production mode
-      raise "You can only clear turks in the sandbox/development environment unless you pass 'true' for the force flag." if RAILS_ENV == 'production' && !force
+      raise "You can only clear turks in the sandbox/development environment unless you pass 'true' for the force flag." if Rails.env.production? && !force
 
       hits = RTurk::Hit.all_reviewable
 
