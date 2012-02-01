@@ -40,11 +40,11 @@ module Turkee
 
               params     = assignment_params(assignment.answers)
               param_hash = Rack::Utils.parse_nested_query(params)
-              logger.info "param_hash: #{ param_hash.inspect }"
+              logger.info "param_hash: #{ DateTime.now : param_hash.inspect }"
               model      = find_model(param_hash)
 
               if model.nil?
-                logger.info "Model nil"
+                logger.info "#{ DateTime.now } : Model nil"
                 next
               end
               result = model.create(param_hash[model.to_s.underscore])
