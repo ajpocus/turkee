@@ -23,7 +23,8 @@ module Turkee
     #  Each specific TurkeeTask object (determined by task_type field) is in charge of
     #  accepting/rejecting the assignment and importing the data into their respective tables.
     def self.process_hits(turkee_task = nil)
-
+     Rails.logger("--**--> #{turkee_task.inspect}")
+     logger("--*logger*--> #{turkee_task.inspect}")
       begin
         # Using a lockfile to prevent multiple calls to Amazon.
         Lockfile.new('/tmp/turk_processor.lock', :max_age => 3600, :retries => 10) do
