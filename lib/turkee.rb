@@ -44,7 +44,7 @@ module Turkee
 
               params     = assignment_params(assignment.answers)
               param_hash = Rack::Utils.parse_nested_query(params)
-              logger.info "#{ DateTime.now }: param_hash: #{ 
+             debug "#{ DateTime.now }: param_hash: #{ 
                 param_hash.inspect }"
               model      = find_model(param_hash)
 
