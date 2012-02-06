@@ -22,9 +22,12 @@ module Turkee
     # Use this method to go out and retrieve the data for all of the posted Turk Tasks.
     #  Each specific TurkeeTask object (determined by task_type field) is in charge of
     #  accepting/rejecting the assignment and importing the data into their respective tables.
+    def self.debug(*args)
+      puts("---STDOUT=> ",*args)
+      logger.info(*args)
+    end
     def self.process_hits(turkee_task = nil)
-     Rails.logger("--**--> #{turkee_task.inspect}")
-     logger("--*logger*--> #{turkee_task.inspect}")
+     debug("--*logger*--> #{turkee_task.inspect}")
       begin
         # Using a lockfile to prevent multiple calls to Amazon.
         Lockfile.new('/tmp/turk_processor.lock', :max_age => 3600, :retries => 10) do
@@ -46,11 +49,11 @@ module Turkee
               model      = find_model(param_hash)
 
               if model.nil?
-                logger.info "#{ DateTime.now }: Model nil"
+                debug "#{ DateTime.now }: Model nil"
                 next
               end
-              logger.info "#{ DateTime.now }: param_hash[#{ model.to_s.underscore }]"
-              logger.info "     #{ param_hash[model.to_s.underscore]}"
+              debug "#{ DateTime.now }: param_hash[#{ model.to_s.underscore }]"
+              debug "     #{ param_hash[model.to_s.underscore]}"
               result = model.create(param_hash[model.to_s.underscore])
               
               # If there's a custom approve? method, see if we should approve the submitted assignment
@@ -64,7 +67,7 @@ module Turkee
           end
         end
       rescue Lockfile::MaxTriesLockError => e
-        logger.info "TurkTask.process_hits is already running or the lockfile /tmp/turk_processor.lock exists from an improperly shutdown previous process. Exiting method call."
+        debug "TurkTask.process_hits is already running or the lockfile /tmp/turk_processor.lock exists from an improperly shutdown previous process. Exiting method call."
       end
 
     end
@@ -103,10 +106,10 @@ module Turkee
 
       hits = RTurk::Hit.all_reviewable
 
-      logger.info "#{hits.size} reviewable hits. \n"
+      debug "#{hits.size} reviewable hits. \n"
 
       unless hits.empty?
-        logger.info "Approving all assignments and disposing of each hit."
+        debug "Approving all assignments and disposing of each hit."
 
         hits.each do |hit|
           begin
@@ -114,7 +117,7 @@ module Turkee
 
             hit.assignments.each do |assignment|
 
-              logger.info "Assignment status : #{assignment.status}"
+              debug "Assignment status : #{assignment.status}"
 
               assignment.approve!('__clear_all_turks__approved__') if assignment.status == 'Submitted'
             end
@@ -158,7 +161,7 @@ module Turkee
     def self.process_result(assignment, result)
       turk = find_by_hit_id(assignment.hit_id)
       if result.errors.size > 0
-        logger.info "Errors : #{result.inspect}"
+        debug "Errors : #{result.inspect}"
         assignment.reject!('Failed to enter proper data.')
       elsif result.respond_to?(:approve?)
         logger.debug "Approving : #{result.inspect}"
