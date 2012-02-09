@@ -16,7 +16,7 @@ class CreateTurkeeTasks < ActiveRecord::Migration
       t.datetime "creation_time"
       t.datetime "completion_time"
       t.integer  "completed_assignments"
-      t.integer  "survey_id"
+      t.string   "survey_id"
       t.timestamps
     end
   end
