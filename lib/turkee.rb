@@ -61,9 +61,8 @@ module Turkee
               process_result(assignment, result)
 
               TurkeeImportedAssignment.create(:assignment_id => assignment.id) rescue nil
+              check_hit_completeness(hit, turk, models)
             end
-
-            check_hit_completeness(hit, turk, models)
           end
         end
       rescue Lockfile::MaxTriesLockError => e
@@ -89,11 +88,16 @@ module Turkee
       end
 
       TurkeeTask.create(:sandbox             => RTurk.sandbox?,
-                        :hit_title           => hit_title,    :hit_description     => hit_description,
-                        :hit_reward          => reward.to_f,  :hit_num_assignments => num_assignments.to_i,
-                        :hit_lifetime        => lifetime,     :form_url            => f_url,
-                        :hit_url             => h.url,        :hit_id              => h.id,
-                        :task_type           => typ,          :complete            => false,
+                        :hit_title           => hit_title,
+                        :hit_description     => hit_description,
+                        :hit_reward          => reward.to_f,  
+                        :hit_num_assignments => num_assignments.to_i,
+                        :hit_lifetime        => lifetime,
+                        :form_url            => f_url,
+                        :hit_url             => h.url,
+                        :hit_id              => h.id,
+                        :task_type           => typ,
+                        :complete            => false,
                         :creation_time       => DateTime.now)
 
     end
@@ -149,8 +153,6 @@ module Turkee
     end
 
     def self.mark_completed(hit, models, turk)
-      hit.dispose!
-
       turk.complete = true
       turk.completion_time = DateTime.now
       turk.save
