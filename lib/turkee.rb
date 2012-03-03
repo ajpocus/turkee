@@ -216,6 +216,37 @@ module Turkee
       url
     end
 
+    def extend_lifetime(days)
+      days = days.to_i
+      RTurk::ExtendHIT(:hit_id => self.hit_id,
+        :seconds => days.days.seconds)
+      new_life = self.hit_lifetime + days
+      self.update_attributes(:hit_lifetime => new_life)
+    end
+  
+    def extend_assignments(num)
+      num = num.to_i
+      RTurk::ExtendHIT(:hit_id => self.hit_id, :assignments => num)
+      new_num = self.hit_num_assignments + num
+      self.update_attributes(:hit_num_assignments => new_num)
+    end
+
+    def force_expire
+      RTurk::ForceExpireHIT(:hit_id => self.hit_id)
+      self.update_attributes(:hit_lifetime => 0)
+    end
+  
+    def cost
+      self.hit_reward * self.hit_num_assignments
+    end
+  
+    def speed
+      if self.complete
+        self.completion_time - self.creation_time
+      else
+        nil
+      end
+    end
   end
 
 
