@@ -82,7 +82,7 @@ module Turkee
         hit.assignments = num_assignments
         hit.description = hit_description
         hit.reward      = reward
-        hit.lifetime    = duration.days.seconds.to_i
+        hit.lifetime    = duration.hours.seconds.to_i
         hit.question(f_url, :frame_height => HIT_FRAMEHEIGHT)
         hit.qualifications.add :approval_rate, { :gt => 92 }
       end
