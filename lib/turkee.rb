@@ -174,6 +174,14 @@ module Turkee
       end
     end
     
+    def status
+      RTurk::Hit.new(self.hit_id).status
+    end
+    
+    def reviewable?
+      self.status == "Reviewable"
+    end
+    
     private
 
     def logger
