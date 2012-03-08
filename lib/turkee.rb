@@ -24,7 +24,7 @@ module Turkee
     #  accepting/rejecting the assignment and importing the data into their respective tables.
     def self.debug(*args)
       puts("---STDOUT=> ",*args)
-      logger.info(*args)
+      Rails.logger.info(*args)
     end
     def self.process_hits(turkee_task = nil)
      debug("--*logger*--> #{turkee_task.inspect}")
@@ -123,7 +123,7 @@ module Turkee
 
               debug "Assignment status : #{assignment.status}"
 
-              assignment.approve!('__clear_all_turks__approved__') if assignment.status == 'Submitted'
+#              assignment.approve!('__clear_all_turks__approved__') if assignment.status == 'Submitted'
             end
 
             turkee_task = TurkeeTask.find_by_hit_id(hit.id)
@@ -198,20 +198,20 @@ module Turkee
         debug "Errors : #{result.inspect}"
         assignment.reject!('Failed to enter proper data.')
       elsif result.respond_to?(:approve?)
-        logger.debug "Approving : #{result.inspect}"
-        if result.approve?
-          turk.completed_assignments ||= 0
-          turk.completed_assignments += 1
-          turk.save
-          assignment.approve!('')
-        else
-          assignment.reject!('Rejected criteria.')
-        end
+#        logger.debug "Approving : #{result.inspect}"
+#        if result.approve?
+#          turk.completed_assignments ||= 0
+#          turk.completed_assignments += 1
+#          turk.save
+#          assignment.approve!('')
+#        else
+#          assignment.reject!('Rejected criteria.')
+#        end
       else
         turk.completed_assignments ||= 0
         turk.completed_assignments += 1
         turk.save
-        assignment.approve!('')
+#        assignment.approve!('')
       end
     end
 
