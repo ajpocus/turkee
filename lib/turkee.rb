@@ -132,6 +132,7 @@ module Turkee
               turkee_task.save
             end
 
+            hit.dispose!
           rescue Exception => e
             # Probably a service unavailable
             logger.error "Exception : #{e.to_s}"
