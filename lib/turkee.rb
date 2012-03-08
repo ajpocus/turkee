@@ -35,11 +35,11 @@ module Turkee
           turks = task_items(turkee_task)
 
           turks.each do |turk|
+            next unless turk.reviewable?
             hit   = RTurk::Hit.new(turk.hit_id)
 
             models = []
             hit.assignments.each do |assignment|
-              next unless submitted?(assignment.status)
               next unless TurkeeImportedAssignment.find_by_assignment_id(assignment.id).nil?
 
               params     = assignment_params(assignment.answers)
