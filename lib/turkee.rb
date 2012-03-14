@@ -61,8 +61,8 @@ module Turkee
               process_result(assignment, result)
 
               TurkeeImportedAssignment.create(:assignment_id => assignment.id) rescue nil
-              check_hit_completeness(hit, turk, models)
             end
+            check_hit_completeness(hit, turk, models)
           end
         end
       rescue Lockfile::MaxTriesLockError => e
