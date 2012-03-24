@@ -84,7 +84,8 @@ module Turkee
         hit.reward      = reward
         hit.lifetime    = duration.days.seconds.to_i
         hit.question(f_url, :frame_height => HIT_FRAMEHEIGHT)
-        hit.qualifications.add :approval_rate, { :gt => 92 }
+        hit.qualifications.add :approval_rate, { :gt => 95 }
+        hit.qualifications.add :hits_approved, { :gt => 1000 }
         hit.duration    = 3600  # hardcode 1 hour duration
       end
 
