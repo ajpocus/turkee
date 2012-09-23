@@ -85,7 +85,7 @@ module Turkee
         hit.lifetime    = duration.days.seconds.to_i
         hit.question(f_url, :frame_height => HIT_FRAMEHEIGHT)
         hit.qualifications.add :approval_rate, { :gt => 95 }
-        hit.qualifications.add :country => { :eq => 'US' }
+        hit.qualifications.add :country, { :eq => 'US' }
         unless RTurk.sandbox?
           hit.qualifications.add :hits_approved, { :gt => 1000 }
         end
